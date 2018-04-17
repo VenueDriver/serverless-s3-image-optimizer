@@ -11,7 +11,10 @@
 #
 # Happy Coding!
 
-service: aws-nodejs # NOTE: update this with your service name
+service: S3 Image Optimizer # NOTE: update this with your service name
+
+plugins:
+  - serverless-offline
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -55,8 +58,17 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  optimize:
+    handler: optimize.image
+    timeout : 120
+    events:
+      - http:
+           path: /optimize
+           method: GET
+           request:
+            parameters:
+              querystrings:
+                url: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
